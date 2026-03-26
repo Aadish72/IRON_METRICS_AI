@@ -1,0 +1,535 @@
+:root {
+    --blood: #b30000;
+    --neon: #ff0505;
+    --void: #050505;
+    --steel: #1a1a1a;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    background-color: var(--void);
+    color: #fff;
+    font-family: 'Bebas Neue', sans-serif;
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+/* --- BACKGROUNDS --- */
+.bg-textured {
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    background: linear-gradient(rgba(0,0,0,0.92), rgba(0,0,0,0.92)),
+                url('https://www.transparenttextures.com/patterns/cracked-concrete.png');
+}
+
+.vignette {
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle, transparent 30%, black 130%);
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* --- INTRO UI --- */
+#intro-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background: black;
+    transition: opacity 0.8s ease;
+}
+.intro-bg {
+    position: absolute;
+    inset: 0;
+    /* Ensure the filename matches your file exactly (case-sensitive!) */
+    background: url('punch.png') no-repeat center center; 
+    background-size: cover; 
+    
+    /* These filters give it that gritty, industrial look */
+    opacity: 0.4; 
+    filter: grayscale(100%) contrast(150%) brightness(0.8);
+    
+    z-index: -1;
+    animation: pulse-zoom 10s infinite alternate;
+}
+
+/* Optional: Adds a slow zoom effect to make the intro feel alive */
+@keyframes pulse-zoom {
+    from { transform: scale(1); }
+    to { transform: scale(1.1); }
+}
+.feed-text {
+    font-family: 'Black Ops One', cursive;
+    font-size: clamp(2.5rem, 10vw, 6rem);
+    letter-spacing: 8px;
+    text-shadow: 3px 0 var(--neon), -3px 0 #0ff;
+    animation: glitch-vibe 0.15s infinite;
+}
+
+@keyframes glitch-vibe {
+    0% { transform: translate(0); }
+    25% { transform: translate(-3px, 1px); }
+    50% { transform: translate(3px, -1px); }
+    100% { transform: translate(0); }
+}
+
+/* --- DASHBOARD --- */
+.container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: 0.5s;
+}
+
+.main-h {
+    font-family: 'Black Ops One';
+    font-size: clamp(3.5rem, 15vw, 9rem);
+    line-height: 0.85;
+    margin-bottom: 3rem;
+    text-align: center;
+}
+
+/* --- BUTTONS --- */
+.btn-grid { display: flex; gap: 1.5rem; flex-wrap: wrap; justify-content: center; }
+
+.punch-btn {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 2rem;
+    width: 260px;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    backdrop-filter: blur(10px);
+-webkit-backdrop-filter: blur(10px);
+font-family: 'Black Ops One', cursive;
+color: #fff;
+
+}
+
+.punch-btn:hover {
+    border-color: var(--neon);
+    background: rgba(139, 0, 0, 0.25);
+    transform: skew(-6deg) translateY(-8px);
+    box-shadow: -12px 12px 0 var(--neon);
+}
+
+.btn-tag { color: var(--neon); font-family: 'Roboto Mono'; font-size: 0.75rem; display: block; margin-bottom: 8px; }
+
+/* --- FORCE ANALYSIS PAGE --- */
+.analysis-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 80px 20px;
+}
+
+/* --- ENHANCED BACK NAVIGATION --- */
+.back-nav {
+    display: inline-block;
+    color: var(--neon);
+    text-decoration: none;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+    padding: 8px 20px;
+    border: 1px solid rgba(255, 5, 5, 0.3);
+    position: relative;
+    transition: all 0.3s ease;
+    background: rgba(255, 5, 5, 0.05);
+    margin-bottom: 40px;
+    clip-path: polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%); /* Angled Cyberpunk edges */
+}
+
+.back-nav::before {
+    content: "<< ";
+    font-weight: bold;
+}
+
+.back-nav:hover {
+    background: var(--neon);
+    color: white;
+    box-shadow: 0 0 15px var(--neon);
+    transform: translateX(-5px); /* Slight slide effect */
+}
+
+/* Positioning it at the top left of the analysis pages */
+/*  */
+
+
+
+.analysis-header h2 {
+    font-family: 'Black Ops One';
+    font-size: clamp(2rem, 6vw, 4rem);
+    text-shadow: 0 0 20px var(--neon);
+    margin-bottom: 10px;
+}
+
+.input-stack { width: 100%; max-width: 500px; }
+
+.input-group {
+    background: rgba(255, 255, 255, 0.02);
+    border-left: 3px solid #333;
+    margin-bottom: 15px;
+    padding: 15px;
+    transition: 0.3s;
+}
+
+.input-group:hover { border-left-color: var(--neon); background: rgba(255, 255, 255, 0.05); }
+
+.input-group label { display: block; font-family: 'Black Ops One'; font-size: 0.8rem; margin-bottom: 5px; }
+
+.input-group input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #444;
+    color: #fff;
+    font-size: 1.2rem;
+    font-family: 'Roboto Mono';
+    outline: none;
+}
+
+.desc { font-family: 'Roboto Mono'; font-size: 0.65rem; color: var(--neon); opacity: 0; max-height: 0; overflow: hidden; transition: 0.4s; }
+.input-group:hover .desc { opacity: 1; max-height: 40px; margin-top: 10px; }
+
+/* --- RESULTS --- */
+.results-terminal {
+    width: 100%;
+    max-width: 500px;
+    background: rgba(10, 10, 10, 0.95);
+    border: 2px solid var(--neon);
+    padding: 30px;
+    position: relative;
+    box-shadow: 0 0 30px rgba(255, 0, 0, 0.2);
+}
+
+.res-value { font-family: 'Black Ops One'; font-size: 3rem; color: #fff; text-shadow: 0 0 10px var(--neon); }
+.status-box { background: rgba(255, 0, 0, 0.1); padding: 15px; border-left: 4px solid var(--neon); margin: 20px 0; font-family: 'Roboto Mono'; }
+
+
+/* ✅ CENTER HEADER */
+.centered-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+/* ✅ GRID SPACING INSTEAD OF STACK */
+.grid-layout {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+/* make full width for last item */
+.grid-layout .input-group:last-child {
+    grid-column: span 2;
+}
+
+/* ✅ MODERN BUTTON (VISIBLE FIX) */
+.compute-btn {
+    grid-column: span 2;
+    margin-top: 10px;
+    padding: 14px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #ff0505, #b30000);
+    color: white;
+    font-family: 'Black Ops One';
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.compute-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px var(--neon);
+}
+
+/* ✅ ERROR MESSAGE */
+#error-msg {
+    grid-column: span 2;
+    text-align: center;
+    margin-top: 5px;
+    font-family: 'Roboto Mono';
+    color: #ff4d4d;
+    font-size: 0.8rem;
+}
+
+.rank-tag {
+    font-family: 'Roboto Mono';
+    font-size: 0.9rem;
+    color: var(--neon);
+    border: 1px solid var(--neon);
+    padding: 2px 12px;
+    display: inline-block;
+    margin-bottom: 15px;
+}
+
+/* ALL QUOTES - BEAST MODE FONT */
+.main-quote-text {
+    font-family: 'Black Ops One', cursive; /* Same as IRON METRICS */
+    font-size: 1.8rem;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 15px;
+    text-shadow: 2px 2px 0px var(--neon); /* Red offset shadow for depth */
+    animation: revealQuote 0.5s ease-out forwards;
+}
+
+.sub-quote-text {
+    font-family: 'Black Ops One', cursive; /* Applied here too */
+    font-size: 1rem;
+    color: var(--neon); /* Red color for the sub-quote */
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-top: 5px;
+    opacity: 0;
+    animation: revealQuote 0.5s ease-out 0.3s forwards;
+}
+
+/* Updated Rank Tag to match */
+.rank-tag {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.8rem;
+    background: #fff;
+    color: #000;
+    font-weight: 900;
+    padding: 2px 12px;
+    display: inline-block;
+    clip-path: polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%); /* Angled edges */
+}
+
+@keyframes revealQuote {
+    from { 
+        opacity: 0; 
+        transform: translateY(10px) skewX(-10deg); 
+        filter: blur(5px); 
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(0) skewX(0deg); 
+        filter: blur(0); 
+    }
+}
+/* The Pulse Animation */
+@keyframes heart-beat {
+    0% { transform: scale(1); filter: drop-shadow(0 0 5px var(--neon)); }
+    15% { transform: scale(1.15); filter: drop-shadow(0 0 20px var(--neon)); }
+    30% { transform: scale(1); filter: drop-shadow(0 0 5px var(--neon)); }
+    45% { transform: scale(1.1); filter: drop-shadow(0 0 15px var(--neon)); }
+    100% { transform: scale(1); filter: drop-shadow(0 0 5px var(--neon)); }
+}
+
+.pulsing-bpm {
+    display: inline-block;
+    font-family: 'Black Ops One', cursive;
+    color: #fff;
+    /* This triggers the animation */
+    animation: heart-beat 1.2s infinite ease-in-out;
+    text-shadow: 0 0 10px var(--neon);
+    font-size: x-large;
+}
+
+.bpm-unit {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 1rem;
+    color: var(--neon);
+    margin-left: 5px;
+}
+
+#error-msg {
+    grid-column: span 2;
+    color: var(--neon);
+    font-family: 'Roboto Mono';
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    text-align: center;
+    margin-top: 10px;
+    letter-spacing: 1px;
+    font-weight: bold;
+}
+
+/* Styling the Select Dropdown */
+.cyber-select {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    border: none;
+    border-bottom: 1px solid #444;
+    color: var(--neon);
+    font-size: 1rem;
+    font-family: 'Roboto Mono', monospace;
+    padding: 10px 5px;
+    outline: none;
+    cursor: pointer;
+    appearance: none; /* Removes default arrow */
+    -webkit-appearance: none;
+}
+
+.cyber-select option {
+    background: var(--void);
+    color: #fff;
+    padding: 10px;
+}
+
+.full-width {
+    grid-column: span 2;
+}
+
+.error-msg {
+    grid-column: span 2;
+    color: var(--neon);
+    font-family: 'Roboto Mono';
+    font-size: 0.8rem;
+    text-align: center;
+    margin-top: 10px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+/* Styling for the Activity Selector */
+.cyber-select {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    border: none;
+    border-bottom: 1px solid #444;
+    color: var(--neon);
+    font-size: 1rem;
+    font-family: 'Roboto Mono', monospace;
+    padding: 10px;
+    outline: none;
+    cursor: pointer;
+    appearance: none; /* Removes the default arrow */
+    -webkit-appearance: none;
+}
+
+.cyber-select:hover {
+    border-bottom-color: var(--neon);
+}
+
+/* Ensure the full-width class works in your grid */
+.full-width {
+    grid-column: span 2;
+}
+
+/* Style for the validation error */
+.error-msg {
+    grid-column: span 2;
+    color: var(--neon);
+    font-family: 'Roboto Mono';
+    font-size: 0.8rem;
+    text-align: center;
+    margin-top: 10px;
+    text-transform: uppercase;
+    font-weight: bold;
+    min-height: 1.2rem;
+}
+
+/* --- CUSTOM ACTIVITY TOGGLE --- */
+/* --- UNIVERSAL TOGGLE STYLES (HEART & FUEL) --- */
+.activity-option, .f-activity-option {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid #333;
+    padding: 15px 5px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column; /* Stacks 01 above Text */
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+
+/* --- HOVER STATE --- */
+.activity-option:hover, .f-activity-option:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: #666;
+    transform: translateY(-2px);
+}
+
+/* --- ACTIVE/SELECTED STATE --- */
+.activity-option.active, .f-activity-option.active {
+    background: rgba(255, 5, 5, 0.15) !important;
+    border-color: var(--neon) !important;
+    box-shadow: inset 0 0 15px rgba(255, 5, 5, 0.3), 0 0 10px rgba(255, 5, 5, 0.2);
+}
+
+/* --- TEXT INSIDE TOGGLES --- */
+.opt-num {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.65rem;
+    color: #666;
+    transition: 0.3s;
+}
+
+.opt-text {
+    font-family: 'Black Ops One', cursive;
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    color: #aaa;
+    transition: 0.3s;
+}
+
+/* Glow text when active */
+.active .opt-num { color: var(--neon); }
+.active .opt-text { 
+    color: #fff; 
+    text-shadow: 0 0 8px var(--neon); 
+}
+
+
+/* GAUGE LAYOUT */
+.gauge-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.gauge-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.progress-ring__circle {
+    transition: stroke-dashoffset 1s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: rotate(-90deg);
+    transform-origin: 50% 50%;
+    /* Circumference for r=70 is 439.8 */
+    stroke-dasharray: 439.8; 
+    stroke-dashoffset: 439.8;
+    filter: drop-shadow(0 0 12px var(--neon));
+}
+
+.res-value-wrapper {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.res-value-small {
+    font-family: 'Black Ops One';
+    font-size: 1.5rem;
+    color: var(--neon);
+}
+
+.mini-stats {
+    margin-top: 15px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 10px;
+    width: 100%;
+    text-align: center;
+}

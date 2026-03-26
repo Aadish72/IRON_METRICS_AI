@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IRON METRICS | FEED THE MACHINE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Bebas+Neue&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="intro-overlay">
+        <div class="intro-bg"></div>
+        <h1 class="feed-text">FEED THE MACHINE</h1>
+        <p class="system-status">SYSTEM_CALIBRATION_ACTIVE</p>
+    </div>
+
+    <div class="bg-textured"></div>
+    <div class="vignette"></div>
+
+    <main class="container" id="dashboard-view">
+        <h1 class="main-h">IRON<br>METRICS</h1>
+        
+        <div class="btn-grid">
+            <div class="punch-btn" onclick="showForceMode()">
+                <span class="btn-tag">CALC.01 // IMPACT</span>
+                <h3>FORCE MODE</h3>
+            </div>
+            
+            <div class="punch-btn" onclick="showHeartMode()">
+                <span class="btn-tag">SYNC.02 // BIOMETRIC</span>
+                <h3>HEART SYNC</h3>
+            </div>
+            
+            <div class="punch-btn" onclick="showFuelMode()">
+                <span class="btn-tag">BURN.03 // METABOLIC</span>
+                <h3>FUEL TRACKER</h3>
+            </div>
+        </div>
+    </main>
+
+    <main class="analysis-container" id="force-view" style="display: none;">
+        <a href="#" class="back-nav" onclick="showDashboard()">[ ESCAPE_TO_BASE ]</a>
+        <header class="analysis-header centered-header">
+            <h2 class="glitch-text">FORCE_ANALYSIS_V1</h2>
+            <p class="system-status">INPUT_REQUIRED: 7_AXIS_SENSOR_DATA</p>
+            <p class="constraint-text">(VALUES SHOULD BE BETWEEN 1.0 TO 8.0)</p>
+        </header>
+
+        <div class="input-stack grid-layout" id="force-input-stack">
+            <div class="input-group">
+                <label>SIDE_TO_SIDE_PEAK</label>
+                <input type="number" step="0.01" placeholder="0.00" class="force-input">
+                <div class="desc">Lateral kinetic shift during the punching phase.</div>
+            </div>
+            <div class="input-group">
+                <label>UP_AND_DOWN_PEAK</label>
+                <input type="number" step="0.01" placeholder="0.00" class="force-input">
+                <div class="desc">Vertical displacement and leg-drive intensity.</div>
+            </div>
+            <div class="input-group">
+                <label>FORWARD_AND_BACK_PEAK</label>
+                <input type="number" step="0.01" placeholder="0.00" class="force-input">
+                <div class="desc">Linear momentum depth of the striking limb.</div>
+            </div>
+            <div class="input-group">
+                <label>ROTATION_SPEED_X_PEAK</label>
+                <input type="number" step="0.01" placeholder="0.00" class="force-input">
+                <div class="desc">Pitch rotation velocity (degrees per second).</div>
+            </div>
+            <div class="input-group">
+                <label>ROTATION_SPEED_Y_PEAK</label>
+                <input type="number" step="0.01" placeholder="0.00" class="force-input">
+                <div class="desc">Yaw rotation and torso torque efficiency.</div>
+            </div>
+            <div class="input-group">
+                <label>ROTATION_SPEED_Z_PEAK</label>
+                <input type="number" step="0.01" placeholder="0.00" class="force-input">
+                <div class="desc">Roll stabilization during impact.</div>
+            </div>
+            <div class="input-group">
+                <label>TOTAL_ENERGY</label>
+                <input type="number" step="0.01" placeholder="0.00" class="force-input">
+                <div class="desc">Cumulative Joules generated in the strike sequence.</div>
+            </div>
+
+            <button class="compute-btn" onclick="triggerCompute()">COMPUTE_IMPACT</button>
+<div id="error-msg"></div>
+        </div>
+
+        <div id="results-display" class="results-terminal" style="display: none;">
+            <div class="scanline"></div>
+            <h3 class="result-title">IMPACT_REPORT_LOG</h3>
+            
+            <div class="gauge-section">
+                <div class="gauge-container">
+                    <svg class="progress-ring" width="160" height="160">
+                        <circle class="progress-ring__background" stroke="#222" stroke-width="12" fill="transparent" r="70" cx="80" cy="80"/>
+                        <circle id="force-gauge" class="progress-ring__circle" stroke="var(--neon)" stroke-width="12" fill="transparent" r="70" cx="80" cy="80"/>
+                    </svg>
+                    <div class="res-value-wrapper">
+                        <span id="out-force" class="res-value">0</span><small>N</small>
+                        <span class="res-label">PEAK_FORCE</span>
+                    </div>
+                </div>
+        
+                <div class="mini-stats">
+                    <div class="stat-box">
+                        <span class="res-label">EFFICIENCY</span>
+                        <span id="out-efficiency" class="res-value-small">0</span><small>%</small>
+                    </div>
+                </div>
+            </div>
+        
+            <div class="status-box">
+                <div id="rank-badge" class="rank-tag">ANALYZING...</div>
+                <div class="quote-animated-box">
+                    <p id="quote-main" class="main-quote-text"></p>
+                    <p id="quote-sub" class="sub-quote-text"></p>
+                </div>
+            </div>
+        
+            <button class="punch-btn" onclick="resetForceForm()">RE-CALIBRATE</button>
+        </div>
+    </main>
+    <main class="analysis-container" id="heart-view" style="display: none;">
+        <a href="#" class="back-nav" onclick="showDashboard()">[ ESCAPE_TO_BASE ]</a>
+        <header class="analysis-header centered-header">
+            <h2 class="glitch-text">HEART_SYNC_V1</h2>
+            <p class="system-status">INPUT_REQUIRED: BIOMETRIC_PARAMETERS</p>
+        </header>
+    
+        <div class="input-stack grid-layout" id="heart-input-stack">
+            <div class="input-group">
+                <label>USER_AGE</label>
+                <input type="number" id="h-age" placeholder="18-60" class="force-input">
+            </div>
+            <div class="input-group">
+                <label>BODY_WEIGHT_KG</label>
+                <input type="number" id="h-weight" placeholder="50-100" class="force-input">
+            </div>
+            <div class="input-group">
+                <label>DAILY_STEPS</label>
+                <input type="number" id="h-steps" placeholder="0-20000" class="force-input">
+            </div>
+            <div class="input-group">
+                <label>CALORIE_INTAKE</label>
+                <input type="number" id="h-calories" placeholder="1500-4000" class="force-input">
+            </div>
+        
+            <div class="input-group full-width">
+                <label>METABOLIC_INTENSITY_LEVEL</label>
+                <div class="activity-toggle-group" id="h-activity-group">
+                    <div class="activity-option active" data-value="1">
+                        <span class="opt-num">01</span>
+                        <span class="opt-text">LOW_INTENSITY</span>
+                    </div>
+                    <div class="activity-option" data-value="2">
+                        <span class="opt-num">02</span>
+                        <span class="opt-text">MODERATE</span>
+                    </div>
+                    <div class="activity-option" data-value="3">
+                        <span class="opt-num">03</span>
+                        <span class="opt-text">HIGH_PERFORM</span>
+                    </div>
+                </div>
+                <input type="hidden" id="h-activity" value="1">
+            </div>
+        
+            <div id="heart-error-msg" class="error-msg"></div>
+            <button class="compute-btn" onclick="triggerHeartSync()">SYNC_BIOMETRICS</button>
+        </div>
+    
+        <div id="heart-results" class="results-terminal" style="display: none;">
+            <div class="scanline"></div>
+            <h3 class="result-title">BIOMETRIC_SYNC_LOG</h3>
+            <div class="result-item" style="text-align: center;">
+                <span class="res-label">PREDICTED_BPM</span>
+                <span id="out-bpm" class="pulsing-bpm">0</span><span class="bpm-unit">BPM</span>
+            </div>
+            <div class="status-box">
+                <div id="h-rank" class="rank-tag">ANALYZING...</div>
+                <div class="quote-animated-box">
+                    <p id="h-quote-main" class="main-quote-text"></p>
+                    <p id="h-quote-sub" class="sub-quote-text"></p>
+                </div>
+            </div>
+            <button class="punch-btn" onclick="resetHeartForm()">RE-CALIBRATE</button>
+        </div>
+    </main>
+
+
+    <main class="analysis-container" id="fuel-view" style="display: none;">
+        <a href="#" class="back-nav" onclick="showDashboard()">[ ESCAPE_TO_BASE ]</a>
+        <header class="analysis-header centered-header">
+            <h2 class="glitch-text">FUEL_TRACKER_V1</h2>
+            <p class="system-status">INPUT_REQUIRED: METABOLIC_EXERTION_DATA</p>
+        </header>
+    
+        <div class="input-stack grid-layout" id="fuel-input-stack">
+            <div class="input-group">
+                <label>USER_AGE</label>
+                <input type="number" id="f-age" placeholder="18-60" class="force-input">
+            </div>
+            <div class="input-group">
+                <label>BODY_WEIGHT_KG</label>
+                <input type="number" id="f-weight" placeholder="50-100" class="force-input">
+            </div>
+            <div class="input-group">
+                <label>STEP_COUNT</label>
+                <input type="number" id="f-steps" placeholder="0-20000" class="force-input">
+            </div>
+            <div class="input-group">
+                <label>WORKOUT_DURATION</label>
+                <input type="number" id="f-workout" placeholder="MINUTES" class="force-input">
+            </div>
+    
+            <div class="input-group full-width">
+                <label>INTENSITY_LEVEL</label>
+                <div class="activity-toggle-group" id="f-activity-group">
+                    <div class="f-activity-option active" data-value="1">
+                        <span class="opt-num">01</span><span class="opt-text">LOW</span>
+                    </div>
+                    <div class="f-activity-option" data-value="2">
+                        <span class="opt-num">02</span><span class="opt-text">MODERATE</span>
+                    </div>
+                    <div class="f-activity-option" data-value="3">
+                        <span class="opt-num">03</span><span class="opt-text">HIGH</span>
+                    </div>
+                </div>
+                <input type="hidden" id="f-activity" value="1">
+            </div>
+    
+            <div id="fuel-error-msg" class="error-msg"></div>
+            <button class="compute-btn" onclick="triggerFuelCompute()">TRACK_BURN</button>
+        </div>
+    
+        <div id="fuel-results" class="results-terminal" style="display: none;">
+            <div class="scanline"></div>
+            <h3 class="result-title">METABOLIC_BURN_LOG</h3>
+            <div class="result-item" style="text-align: center;">
+                <span class="res-label">CALORIES_BURNED</span>
+                <span id="out-calories" class="res-value">0</span><small>KCAL</small>
+            </div>
+            <div class="status-box">
+                <div id="f-rank" class="rank-tag">ANALYZING...</div>
+                <div class="quote-animated-box">
+                    <p id="f-quote-main" class="main-quote-text"></p>
+                    <p id="f-quote-sub" class="sub-quote-text"></p>
+                </div>
+            </div>
+            <button class="punch-btn" onclick="resetFuelForm()">RE-CALIBRATE</button>
+        </div>
+    </main>
+
+
+
+
+
+
+
+
+    <script src="script.js"></script>
+</body>
+</html>
